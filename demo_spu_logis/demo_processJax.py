@@ -3,15 +3,12 @@
 # @Author : YeMeng 
 # @File : main_process.py 
 # @contact: 876720687@qq.com
-from demo_spu_logis import *
-
-# %matplotlib inline
+# Load the data
+from demo_spu_logis.demo_jax import *
 
 # Load the data
-from demo_spu_logis.demo2_spu import *
-
-x1, y = breast_cancer(party_id=1, train=True)
-x2, y = breast_cancer(party_id=2, train=True)
+x1, _ = breast_cancer(party_id=1,train=True)
+x2, y = breast_cancer(party_id=2,train=True)
 
 # Hyperparameter
 W = jnp.zeros((30,))

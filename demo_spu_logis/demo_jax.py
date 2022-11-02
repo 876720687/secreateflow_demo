@@ -25,7 +25,7 @@ def breast_cancer(party_id=None, train: bool = True) -> (np.ndarray, np.ndarray)
     if train:
         if party_id:
             if party_id == 1:
-                return x_train[:, 15:], _
+                return x_train[:, 15:], 0
             else:
                 return x_train[:, :15], y_train
         else:
