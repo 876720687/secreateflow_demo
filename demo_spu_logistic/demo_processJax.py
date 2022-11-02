@@ -4,7 +4,7 @@
 # @File : main_process.py 
 # @contact: 876720687@qq.com
 # Load the data
-from demo_spu_logis.demo_jax import *
+from demo_spu_logistic.demo_jax import *
 
 # Load the data
 x1, _ = breast_cancer(party_id=1,train=True)

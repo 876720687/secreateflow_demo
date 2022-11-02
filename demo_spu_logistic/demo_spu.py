@@ -4,7 +4,7 @@
 # @File : demo_spu.py 
 # @contact: 876720687@qq.com
 import secretflow as sf
-from demo_spu_logis.demo_jax import *
+from demo_spu_logistic.demo_jax import *
 
 # sf.shutdown()
 
