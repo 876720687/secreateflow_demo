@@ -5,7 +5,7 @@
 # @contact: 876720687@qq.com
 
 import jax.numpy as jnp
-from demo_spu_neral.demo2_model import *
+from demo3_spu_neral.demo2_model import *
 import jax
 
 

@@ -16,7 +16,7 @@ data = pd.concat([iris.data, iris.target], axis=1)
 
 # 切换到你需要存放的数据路径当中
 # temp_dir = tempfile.mkdtemp()
-temp_dir = '/tmp/tmp2ekof8y9'
+temp_dir = '/home/root-demo1/code/secretflow_demo/input'
 
 # ------按照水平（特征相同）和垂直（样本相同）两种方式对数据进行切分 -------------
 

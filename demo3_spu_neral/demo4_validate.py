@@ -5,7 +5,7 @@
 # @contact: 876720687@qq.com
 from sklearn.metrics import roc_auc_score
 
-from demo_spu_neral.demo3_train import predict
+from demo3_spu_neral.demo3_train import predict
 
 
 def validate_model(params, X_test, y_test):

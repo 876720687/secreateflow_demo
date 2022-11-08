@@ -8,7 +8,8 @@ import numpy as np
 from sklearn.datasets import load_iris
 import os
 
-
+# 数据质量最好通过每个源自行保证（预处理工程）
+# 处理好的数据进行多源求交方便后续的操作
 
 
 # In case you have a running secretflow runtime already.

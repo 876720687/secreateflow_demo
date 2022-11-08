@@ -6,9 +6,9 @@
 
 # 使用 JAX/FLAX 训练模型
 # Load the data
-from demo_spu_neral.demo1_dataloader import *
-from demo_spu_neral.demo3_train import *
-from demo_spu_neral.demo4_validate import *
+from demo3_spu_neral.demo1_dataloader import *
+from demo3_spu_neral.demo3_train import *
+from demo3_spu_neral.demo4_validate import *
 
 x1, _ = breast_cancer(party_id=1, train=True)
 x2, y = breast_cancer(party_id=2, train=True)

@@ -4,10 +4,9 @@
 # @File : demo_spu.py 
 # @contact: 876720687@qq.com
 import secretflow as sf
-from demo_spu_logistic.demo_jax import *
+from demo2_spu_logistic.demo_jax import *
 
 # sf.shutdown()
-
 sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
 
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
@@ -16,7 +15,7 @@ spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
 x1, _ = alice(breast_cancer)(party_id=1)
 x2, y = bob(breast_cancer)(party_id=2)
 
-# 将超参数和所有数据传递给 SPU 设备
+# --------------- 将超参数和所有数据传递给 SPU 设备 --------------
 device = spu
 W = jnp.zeros((30,))
 b = 0.0
@@ -43,6 +42,7 @@ print(b_)
 
 # ---------------- model train ----------------
 # sf.reveal 将任何 DeviceObject 转换为 Python object
+# has the risk to expore
 losses = sf.reveal(losses)
 # plot_losses(losses)
 X_test, y_test = breast_cancer(train=False)
