@@ -3,14 +3,25 @@
 # @Author : YeMeng 
 # @File : demo_spu.py 
 # @contact: 876720687@qq.com
+
 import secretflow as sf
 from demo2_spu_logistic.demo_processJax import *
+import sys
+# sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 
 # ---------------- Spu ------------------
-# sf.shutdown()
-sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
+##  sf.shutdown()
+# 伪分布式
+# sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
+# 分布式
+# 先确定集群是启动的ray status
+sf.init(address='auto')
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
 spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
+
+# ------------------ distributed sys testing -----------------
+
+
 # Load the data
 x1, _ = alice(breast_cancer)(party_id=1)
 x2, y = bob(breast_cancer)(party_id=2)

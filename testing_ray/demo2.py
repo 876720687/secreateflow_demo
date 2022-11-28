@@ -22,7 +22,6 @@ def search(array, n):
 if __name__ == '__main__':
     array = np.random.randint(0,1000,size=100)
     array = list(array)
-    tic = time.time()
+    start = time.time()
     results = [search(array, random.randint(0,1000)) for x in range(int(sys.argv[1]))]
-    duration = (time.time() - tic)
-    print("duration = "+ str(duration))
+    print("duration = "+ str(str(time.time() - start)))

@@ -6,7 +6,6 @@ import secretflow as sf
 from secretflow.data.vertical import read_csv as v_read_csv
 
 # sf.shutdown()
-
 sf.init(['alice', 'bob', 'carol'])
 alice, bob, carol = sf.PYU('alice'), sf.PYU('bob'), sf.PYU('carol')
 

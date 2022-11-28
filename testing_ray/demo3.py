@@ -22,10 +22,10 @@ def search(array, n):
 
 
 if __name__ == '__main__':
-    ray.init(num_cpus=10, ignore_reinit_error=True)
-    array = np.random.randint(0,1000,size=100)
+    ray.init(address='auto') # init ray system
+    array = np.random.randint(0, 1000, size=100)
     array = list(array)
     start = time.time()
     result_ids = [search.remote(array, random.randint(0,1000)) for x in range(int(sys.argv[1]))]
     results = ray.get(result_ids)
-    print("duration = "+ str(time.time()-start))
+    print("duration = " + str(time.time()-start))
