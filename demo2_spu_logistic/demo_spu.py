@@ -3,19 +3,28 @@
 # @Author : YeMeng 
 # @File : demo_spu.py 
 # @contact: 876720687@qq.com
-
+import os
 import secretflow as sf
+from pathlib import Path
 from demo2_spu_logistic.demo_processJax import *
+# 添加路径的两种方法，后期更加推荐第二种
 import sys
-# sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
+sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
+
+# FILE = Path(__file__).resolve()
+# ROOT = FILE.parents[0]  # root directory
+# if str(ROOT) not in sys.path:
+#     sys.path.append(str(ROOT))  # add ROOT to PATH
+# ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 # ---------------- Spu ------------------
-##  sf.shutdown()
+sf.shutdown() # 防止集群是启动状态的
 # 伪分布式
-# sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
-# 分布式
-# 先确定集群是启动的ray status
-sf.init(address='auto')
+sf.init(['alice', 'bob'], num_cpus=8,  log_to_driver=True)
+
+# 分布式,先确定集群是启动的ray status
+# sf.init(address='auto')
+
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
 spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
 
