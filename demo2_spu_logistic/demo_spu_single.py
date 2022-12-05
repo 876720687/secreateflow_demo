@@ -11,25 +11,20 @@ from demo2_spu_logistic.demo_processJax import *
 import sys
 sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 
-# FILE = Path(__file__).resolve()
-# ROOT = FILE.parents[0]  # root directory
-# if str(ROOT) not in sys.path:
-#     sys.path.append(str(ROOT))  # add ROOT to PATH
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]  # root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))  # add ROOT to PATH
 # ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 # ---------------- Spu ------------------
-sf.shutdown() # 防止集群是启动状态的
 # 伪分布式
+sf.shutdown() # 防止集群是启动状态的
 sf.init(['alice', 'bob'], num_cpus=8,  log_to_driver=True)
-
-# 分布式,先确定集群是启动的ray status
-# sf.init(address='auto')
-
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
 spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
 
 # ------------------ distributed sys testing -----------------
-
 
 # Load the data
 x1, _ = alice(breast_cancer)(party_id=1)
