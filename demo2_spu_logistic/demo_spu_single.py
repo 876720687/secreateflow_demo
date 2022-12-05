@@ -9,7 +9,7 @@ from pathlib import Path
 from demo2_spu_logistic.demo_processJax import *
 # 添加路径的两种方法，后期更加推荐第二种
 import sys
-sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
+# sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # root directory
