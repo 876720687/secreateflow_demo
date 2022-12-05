@@ -14,7 +14,7 @@ import jax.numpy as jnp
 from jax import value_and_grad
 
 # data is okey to be in np but the model should be switch to jnp
-def breast_cancer(party_id=None, train: bool = True) -> (np.ndarray, np.ndarray):
+def breast_cancer(party_id = None, train: bool = True) -> (np.ndarray, np.ndarray):
     scaler = Normalizer(norm='max')
     x, y = load_breast_cancer(return_X_y=True)
     x = scaler.fit_transform(x)

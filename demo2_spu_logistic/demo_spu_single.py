@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
-# @Time : 2022/11/2 18:41 
+# @Time : 2022/12/5 14:43 
 # @Author : YeMeng 
-# @File : demo_spu.py 
+# @File : demo_spu_single.py 
 # @contact: 876720687@qq.com
 import os
 import secretflow as sf
