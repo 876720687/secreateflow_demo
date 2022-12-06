@@ -6,7 +6,7 @@
 
 # 使用 JAX/FLAX 训练模型
 # Load the data
-from demo3_spu_neral.demo1_dataloader import *
+from utils.demo_processJax import *
 from demo3_spu_neral.demo3_train import *
 from demo3_spu_neral.demo4_validate import *
 

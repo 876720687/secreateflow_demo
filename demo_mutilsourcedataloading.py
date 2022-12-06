@@ -6,40 +6,8 @@ from sklearn.datasets import load_iris
 import secretflow as sf
 from secretflow.data.vertical import read_csv as v_read_csv
 
-cluster_def={
-    'nodes': [
-        {
-            'party': 'alice',
-            'id': '0',
-            # Use the address and port of alice instead.
-            # Please choose a unused port.
-            'address': '192.168.200.203:9395',
-        },
-        {
-            'party': 'bob',
-            'id': '1',
-            # Use the address and port of alice instead.
-            # Please choose a unused port.
-            'address': '192.168.200.203:9394',
-        },
-        {
-            'party': 'carol',
-            'id': '2',
-            # Use the ip and port of bob instead.
-            # Please choose a unused port.
-            'address': '192.168.200.205:9393',
-        },
-    ],
-    'runtime_config': {
-        'protocol': spu.spu_pb2.SEMI2K,
-        'field': spu.spu_pb2.FM128,
-        'sigmoid_mode': spu.spu_pb2.RuntimeConfig.SIGMOID_REAL,
-    }
-}
-
-
-# sf.shutdown()
-# sf.init(['alice', 'bob', 'carol']) # 当集群已经是启动状态的时候只需要实例化pyu并合并为spu
+sf.shutdown()
+sf.init(['alice', 'bob', 'carol']) # 当集群已经是启动状态的时候只需要实例化pyu并合并为spu
 alice, bob, carol = sf.PYU('alice'), sf.PYU('bob'), sf.PYU('carol')
 
 

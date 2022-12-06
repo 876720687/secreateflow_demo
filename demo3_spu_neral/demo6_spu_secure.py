@@ -6,16 +6,15 @@
 import secretflow as sf
 
 # In case you have a running secretflow runtime already.
-from demo3_spu_neral.demo1_dataloader import *
+from utils.demo_processJax import *
 from demo3_spu_neral.demo3_train import *
 from demo3_spu_neral.demo5 import *
 
 sf.shutdown()
-
 sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
-
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
 spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
+
 
 x1, _ = alice(breast_cancer)(party_id=1, train=True)
 x2, y = bob(breast_cancer)(party_id=2, train=True)

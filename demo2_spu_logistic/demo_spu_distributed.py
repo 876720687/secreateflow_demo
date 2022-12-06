@@ -9,6 +9,9 @@ import os
 from pathlib import Path
 # 添加路径的两种方法，后期更加推荐第二种
 import sys
+
+from utils.demo_processJax import *
+
 # sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 FILE = Path(__file__).resolve() # '/home/almalinux/sf-benchmark/demo2_spu_logistic/demo_spu.py'
 ROOT = FILE.parents[0]  # root directory
@@ -17,8 +20,8 @@ if str(ROOT) not in sys.path:
 # ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 
-from demo_processJax import *
-from config import *
+
+from utils.config import *
 import secretflow as sf
 
 
@@ -35,10 +38,10 @@ spu = sf.SPU(cluster_def=cluster_def_2)
 
 # ------------------ distributed sys testing -----------------
 # Load the data
-# x1, _ = alice(breast_cancer)(party_id=1)
-# x2, y = bob(breast_cancer)(party_id=2)
-x1, _ = alice(breast_cancer)
-x2, y = bob(breast_cancer)
+x1, _ = alice(breast_cancer)(party_id=1)
+x2, y = bob(breast_cancer)(party_id=2)
+# x1, _ = alice(breast_cancer)
+# x2, y = bob(breast_cancer)
 
 
 
@@ -63,22 +66,3 @@ losses, W_, b_ = device(
 )(W_, b_, x1_, x2_, y_, epochs=100, learning_rate=1e-2)
 
 # TODO: how to save the output?
-
-
-# --------- 测试模式的时候可以进行check ------------
-# because of the sf is not instantiated in this kind of system
-# print(losses)
-# print(W_)
-# print(b_)
-
-
-# Plot the loss
-# sf.reveal 将任何 DeviceObject 转换为 Python object
-# has the risk to expore
-# losses = sf.reveal(losses)
-# plot_losses(losses)
-
-# Validate the model
-# X_test, y_test = breast_cancer(train=False)
-# auc = validate_model(sf.reveal(W_), sf.reveal(b_), X_test, y_test)
-# print(f'auc={auc}')

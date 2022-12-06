@@ -62,7 +62,7 @@ fed_model = FLModel(server=charlie,
                     model=model,
                     aggregator=secure_aggregator,
                     strategy="fed_avg_w",
-                    backend = "tensorflow")
+                    backend="tensorflow")
 
 history = fed_model.fit(x_train,
                         y_train,
