@@ -3,6 +3,9 @@
 # @Author : YeMeng 
 # @File : demo1.py 
 # @contact: 876720687@qq.com
+
+# success
+
 import secretflow as sf
 
 # In case you have running secretflow runtime already.
@@ -50,6 +53,7 @@ carol_x, dave_x, eric_x = (
 
 
 import tempfile
+
 
 tmp_dir = tempfile.mkdtemp()
 

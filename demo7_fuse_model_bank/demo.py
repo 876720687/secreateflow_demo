@@ -4,7 +4,9 @@
 # @File : demo.py 
 # @contact: 876720687@qq.com
 
-# TODO:test on server
+# TODO: needs high performance server.
+# success.
+
 import secretflow as sf
 import pandas as pd
 from secretflow.utils.simulation.datasets import dataset

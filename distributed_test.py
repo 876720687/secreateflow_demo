@@ -15,7 +15,7 @@ FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
-ROOT = Path(os.path.relpath(ROOT, Path.cwd()))
+# ROOT = Path(os.path.relpath(ROOT, Path.cwd()))
 
 
 alice, bob, carol = sf.PYU('alice'), sf.PYU('bob'), sf.PYU('carol')
@@ -31,7 +31,7 @@ output_path = {alice: alice_output_path, carol: carol_output_path}
 
 
 # 单多键隐私求交
-spu = sf.SPU(cluster_def=cluster_def_2)
+spu = sf.SPU(cluster_def=Distributed_doubelCluster_)
 # 合并方式为uid
 spu.psi_csv(key='uid', input_path=input_path, output_path=output_path, receiver='alice')
 # 合并方式为uid, month

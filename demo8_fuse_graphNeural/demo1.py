@@ -5,6 +5,7 @@
 # @contact: 876720687@qq.com
 
 # TODO: make sure you have enough computation resources.
+# success
 
 import secretflow as sf
 

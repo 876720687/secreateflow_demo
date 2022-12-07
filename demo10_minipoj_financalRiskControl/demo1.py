@@ -3,6 +3,9 @@
 # @Author : YeMeng 
 # @File : demo1.py 
 # @contact: 876720687@qq.com
+
+# success
+
 import secretflow as sf
 
 sf.shutdown()
@@ -11,34 +14,42 @@ alice, bob = sf.PYU('alice'), sf.PYU('bob')
 spu = sf.SPU(sf.utils.testing.cluster_def(['alice', 'bob']))
 
 import pandas as pd
-
+# secretflow.utils.simulation.datasets contains mirrors of some popular open dataset.
+from secretflow.utils.simulation.datasets import dataset
+import numpy as np
+import tempfile
 # 当pd.dataframe过宽时，Sphinx目前的主题无法正确显示html格式输出，
 # 如果自行运行notebook时可以忽略。
 pd.set_option('display.notebook_repr_htm', False)
+pd.set_option('display.max_rows', None)
+from secretflow.stats.table_statistics import table_statistics
+from pathlib import Path
+import sys
 
-# secretflow.utils.simulation.datasets contains mirrors of some popular open dataset.
-from secretflow.utils.simulation.datasets import dataset
 
 df = pd.read_csv(dataset('bank_marketing_full'), sep=';')
 df['uid'] = df.index + 1
-
-import numpy as np
-
 df_alice = df.iloc[:, np.r_[0:8, -1]].sample(frac=0.9)
-
 df_bob = df.iloc[:, 8:].sample(frac=0.9)
-
-import tempfile
-
+# 构建采样数据集
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 _, alice_path = tempfile.mkstemp()
 _, bob_path = tempfile.mkstemp()
+# alice_path = str(ROOT) + '/data'
+# bob_path = str(ROOT) + '/data'
 df_alice.reset_index(drop=True).to_csv(alice_path, index=False)
 df_bob.reset_index(drop=True).to_csv(bob_path, index=False)
 
-
+# 方法1 将隐私求交结果保存至文件
 _, alice_psi_path = tempfile.mkstemp()
 _, bob_psi_path = tempfile.mkstemp()
+# alice_psi_path = str(ROOT) + '/data'
+# bob_psi_path = str(ROOT) + '/data'
 
+# 先将文件保存，然后进行后续操作。
 spu.psi_csv(
     key="uid",
     input_path={alice: alice_path, bob: bob_path},
@@ -48,7 +59,7 @@ spu.psi_csv(
     sort=True,
 )
 
-# 方法2
+# 方法2 将求交结果保存至VDataFrame
 from secretflow.data.vertical import read_csv as v_read_csv
 
 vdf = v_read_csv(
@@ -58,28 +69,16 @@ vdf = v_read_csv(
     drop_keys="uid",
     psi_protocl="ECDH_PSI_2PC",
 )
-
-
-
-
-from secretflow.stats.table_statistics import table_statistics
-
-pd.set_option('display.max_rows', None)
+print(vdf.columns)
+# ----------------- 特征预处理 -----------------
+# ------------------ 缺失值填充 ----------------
 data_stats = table_statistics(vdf)
-
-pd.reset_option('display.max_rows')
-
-
 vdf['education'] = vdf['education'].replace(
     {'tertiary': 3, 'secondary': 2, 'primary': 1, 'unknown': np.NaN}
 )
-
 vdf['default'] = vdf['default'].replace({'no': 0, 'yes': 1, 'unknown': np.NaN})
-
 vdf['housing'] = vdf['housing'].replace({'no': 0, 'yes': 1, 'unknown': np.NaN})
-
 vdf['loan'] = vdf['loan'].replace({'no': 0, 'yes': 1, 'unknown': np.NaN})
-
 vdf['month'] = vdf['month'].replace(
     {
         'jan': 1,
@@ -116,7 +115,7 @@ vdf["loan"] = vdf["loan"].fillna(vdf["loan"].mode())
 # print(sf.reveal(vdf.partitions[alice].data))
 # print(sf.reveal(vdf.partitions[bob].data))
 
-
+# -------------------- woe分箱 -------------------
 from secretflow.preprocessing.binning.vert_woe_binning import VertWoeBinning
 from secretflow.preprocessing.binning.vert_woe_substitution import VertWOESubstitution
 
@@ -135,9 +134,8 @@ vdf = woe_sub.substitution(vdf, woe_rules)
 # print(sf.reveal(vdf.partitions[alice].data))
 # print(sf.reveal(vdf.partitions[bob].data))
 
-
+#  ---------------- one hot 编码 ---------------------
 from secretflow.preprocessing.encoder import OneHotEncoder
-
 encoder = OneHotEncoder()
 # for vif and correlation only
 vdf_hat = vdf.drop(columns=["job", "marital", "contact", "month", "day", "poutcome"])
@@ -167,7 +165,7 @@ vdf = vdf.drop(columns=["job", "marital", "contact", "month", "day", "poutcome"]
 
 
 
-
+# ---------------------- 标准化 ---------------------
 from secretflow.preprocessing import StandardScaler
 
 X = vdf.drop(columns=['y'])
@@ -181,34 +179,27 @@ vdf[X.columns] = X
 
 
 # ----------------- 数据分析 ---------------
-from secretflow.stats.table_statistics import table_statistics
-
-pd.set_option('display.max_rows', None)
-data_stats = table_statistics(vdf)
-pd.reset_option('display.max_rows')
-
+# 全表统计
+#
 # 相关系数矩阵
+#
+# VIF指标计算
+from secretflow.stats.table_statistics import table_statistics
 from secretflow.stats.ss_pearsonr_v import PearsonR
-
+from secretflow.stats.ss_vif_v import VIF
+# 全表统计
+data_stats = table_statistics(vdf)
+# 相关系数矩阵
 pearson_r_calculator = PearsonR(spu)
 corr_matrix = pearson_r_calculator.pearsonr(vdf_hat)
-
-import numpy as np
-
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
-# corr_matrix
-
-
-from secretflow.stats.ss_vif_v import VIF
-
+# VIF指标计算
 vif_calculator = VIF(spu)
 vif_results = vif_calculator.vif(vdf_hat)
 # print(vdf_hat.columns)
 # print(vif_results)
 
-
-
-
+# --------------------- 模型训练 --------------------
 from secretflow.data.split import train_test_split
 
 random_state = 1234
@@ -222,7 +213,6 @@ test_x = test_vdf.drop(columns=['y'])
 test_y = test_vdf['y']
 
 
-
 stats_df = table_statistics(train_x['balance'])
 min_val, max_val = stats_df['min'], stats_df['max']
 from secretflow.stats import psi_eval
@@ -232,7 +222,7 @@ import jax.numpy as jnp
 split_points = equal_range(jnp.array([min_val, max_val]), 3)
 balance_psi_score = psi_eval(train_x['balance'], test_x['balance'], split_points)
 
-sf.reveal(balance_psi_score)
+print(sf.reveal(balance_psi_score))
 
 
 
@@ -252,8 +242,6 @@ lr_model.fit(
 )
 
 
-
-
 from secretflow.ml.boost.ss_xgb_v import Xgb
 
 xgb = Xgb(spu)
@@ -269,10 +257,8 @@ params = {
 }
 xgb_model = xgb.train(params=params, dtrain=train_x, label=train_y)
 
-
-
+# ----------------- 模型预测 ------------------
 lr_y_hat = lr_model.predict(x=test_x, batch_size=1024, to_pyu=bob)
-
 xgb_y_hat = xgb_model.predict(dtrain=test_x, to_pyu=bob)
 
 
@@ -342,14 +328,14 @@ sf.reveal(score.partitions[bob])
 
 
 #  -------------- 清理临时文件 ---------------
-# import os
-#
-# try:
-#     os.remove(alice_path)
-#     os.remove(alice_psi_path)
-#     os.remove(bob_path)
-#     os.remove(bob_psi_path)
-# except OSError:
-#     pass
-#
-# sf.shutdown()
+import os
+
+try:
+    os.remove(alice_path)
+    os.remove(alice_psi_path)
+    os.remove(bob_path)
+    os.remove(bob_psi_path)
+except OSError:
+    pass
+
+sf.shutdown()

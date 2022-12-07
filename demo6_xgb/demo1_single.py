@@ -5,6 +5,7 @@
 # @contact: 876720687@qq.com
 
 # TODO：AttributeError: 'NoneType' object has no attribute 'XGDMatrixFree'
+# success run in debug.
 
 import secretflow as sf
 # In case you have a running secretflow runtime already.

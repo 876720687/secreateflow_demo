@@ -4,7 +4,9 @@
 # @File : demo1.py 
 # @contact: 876720687@qq.com
 
-# TODO： which needs high performance server.
+# TODO： needs high performance server.
+# success in server.
+
 import secretflow as sf
 from matplotlib import pyplot as plt
 
@@ -83,12 +85,12 @@ history = fl_model.fit(
 
 
 
-# Draw accuracy values for training & validation
-plt.plot(history.global_history['accuracy'])
-plt.plot(history.global_history['val_accuracy'])
-plt.title('FLModel accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Valid'], loc='upper left')
-plt.show()
+# # Draw accuracy values for training & validation
+# plt.plot(history.global_history['accuracy'])
+# plt.plot(history.global_history['val_accuracy'])
+# plt.title('FLModel accuracy')
+# plt.ylabel('Accuracy')
+# plt.xlabel('Epoch')
+# plt.legend(['Train', 'Valid'], loc='upper left')
+# plt.show()
 
