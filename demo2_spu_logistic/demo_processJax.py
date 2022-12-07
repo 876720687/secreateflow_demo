@@ -102,3 +102,5 @@ if __name__ == "__main__":
     X_test, y_test = breast_cancer(train=False)
     auc=validate_model(W,b, X_test, y_test)
     print(f'auc={auc}')
+
+

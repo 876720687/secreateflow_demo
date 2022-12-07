@@ -5,10 +5,12 @@
 # @contact: 876720687@qq.com
 
 import jax.numpy as jnp
-# from demo3_spu_neral.demo2_model import *
 import jax
 from typing import Sequence
 import flax.linen as nn
+from sklearn.metrics import roc_auc_score
+
+from demo2_spu_logistic.demo_processJax import breast_cancer
 
 FEATURES = [30, 15, 8, 1]
 
@@ -72,3 +74,27 @@ def train_auto_grad(x1, x2, y, params, n_batch=10, n_epochs=10, step_size=0.01):
 def model_init(n_batch=10):
     model = MLP(FEATURES)
     return model.init(jax.random.PRNGKey(1), jnp.ones((n_batch, FEATURES[0])))
+
+
+def validate_model(params, X_test, y_test):
+    y_pred = predict(params, X_test)
+    return roc_auc_score(y_test, y_pred)
+
+
+if __name__ == "__main__":
+    x1, _ = breast_cancer(party_id=1, train=True)
+    x2, y = breast_cancer(party_id=2, train=True)
+
+    # Hyperparameter
+    n_batch = 10
+    n_epochs = 10
+    step_size = 0.01
+
+    # Train the model
+    init_params = model_init(n_batch)
+    params = train_auto_grad(x1, x2, y, init_params, n_batch, n_epochs, step_size)
+
+    # Test the model
+    X_test, y_test = breast_cancer(train=False)
+    auc = validate_model(params, X_test, y_test)
+    print(f'auc={auc}')

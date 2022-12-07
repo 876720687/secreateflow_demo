@@ -6,7 +6,6 @@
 import sys
 import time
 import logging
-
 from absl import app
 import spu
 import secretflow as sf
@@ -43,14 +42,14 @@ def main(_):
 
     # <<< !!! >>> replace path to real parties local file path.
     input_path = {
-        alice: '/home/almalinux/sf-benchmark/psi_1.csv',
-        bob: '/home/almalinux/sf-benchmark/psi_2.csv',
+        alice: '/home/almalinux/sf-benchmark/data/psi_1.csv',
+        bob: '/home/almalinux/sf-benchmark/data/psi_2.csv',
         # if run with `ECDH_PSI_3PC`, add carol
         # carol: '/home/almalinux/sf-benchmark/psi_3.csv',
     }
     output_path = {
-        alice: '/home/almalinux/sf-benchmark/psi_output.csv',
-        bob: '/home/almalinux/sf-benchmark/psi_output.csv',
+        alice: '/home/almalinux/sf-benchmark/data/psi_output.csv',
+        bob: '/home/almalinux/sf-benchmark/data/psi_output.csv',
         # if run with `ECDH_PSI_3PC`, add carol
         # carol: '/home/almalinux/sf-benchmark/psi_output.csv',
     }

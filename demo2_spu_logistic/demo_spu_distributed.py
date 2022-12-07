@@ -7,10 +7,8 @@
 # operation info import
 import os
 from pathlib import Path
-# 添加路径的两种方法，后期更加推荐第二种
 import sys
-
-from utils.demo_processJax import *
+from demo2_spu_logistic.demo_processJax import *
 
 # sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 FILE = Path(__file__).resolve() # '/home/almalinux/sf-benchmark/demo2_spu_logistic/demo_spu.py'
@@ -18,7 +16,6 @@ ROOT = FILE.parents[0]  # root directory
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 # ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
-
 
 
 from utils.config import *
@@ -33,8 +30,7 @@ import secretflow as sf
 # 分布式,先确定集群是启动的ray status
 # sf.init(address='auto')
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
-
-spu = sf.SPU(cluster_def=cluster_def_2)
+spu = sf.SPU(cluster_def=Distributed_DoubelCluster)
 
 # ------------------ distributed sys testing -----------------
 # Load the data
@@ -42,8 +38,6 @@ x1, _ = alice(breast_cancer)(party_id=1)
 x2, y = bob(breast_cancer)(party_id=2)
 # x1, _ = alice(breast_cancer)
 # x2, y = bob(breast_cancer)
-
-
 
 # ----------------- Hyperparameter->SPU -------------------
 device = spu

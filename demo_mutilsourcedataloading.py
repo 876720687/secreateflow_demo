@@ -60,7 +60,5 @@ vdf = v_read_csv({alice: v_alice_path, bob: v_bob_path, carol: v_carol_path})
 
 
 # ----------------- Clean up temporary files ------------
-
 # import shutil
-#
 # shutil.rmtree(temp_dir, ignore_errors=True)

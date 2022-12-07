@@ -31,7 +31,7 @@ output_path = {alice: alice_output_path, carol: carol_output_path}
 
 
 # 单多键隐私求交
-spu = sf.SPU(cluster_def=Distributed_doubelCluster_)
+spu = sf.SPU(cluster_def=Distributed_DoubelCluster)
 # 合并方式为uid
 spu.psi_csv(key='uid', input_path=input_path, output_path=output_path, receiver='alice')
 # 合并方式为uid, month

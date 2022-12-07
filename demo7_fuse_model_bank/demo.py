@@ -18,7 +18,7 @@ from secretflow.utils.simulation.datasets import load_bank_marketing
 
 sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
-spu = Pseudo_distributed_doubleCluster
+spu = Pseudo_distributed_DoubleCluster
 
 
 df = pd.read_csv(dataset('bank_marketing'), sep=';')

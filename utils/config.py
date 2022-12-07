@@ -6,11 +6,11 @@
 import spu
 import secretflow as sf
 
-Pseudo_distributed_doubleCluster = sf.utils.testing.cluster_def(['alice', 'bob'])
+Pseudo_distributed_DoubleCluster = sf.utils.testing.cluster_def(parties=['alice', 'bob'])
 
-# aby3_config = sf.utils.testing.cluster_def(parties=['alice', 'bob', 'carol'])
+Pseudo_distributed_TripleCluster = sf.utils.testing.cluster_def(parties=['alice', 'bob', 'carol'])
 
-Distributed_doubelCluster_={
+Distributed_DoubelCluster = {
     'nodes': [
         {
             'party': 'alice',
