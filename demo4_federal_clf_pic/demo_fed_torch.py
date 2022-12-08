@@ -27,7 +27,6 @@ from torch.nn import functional as F
 
 class ConvNet(BaseModule):
     """Small ConvNet for MNIST."""
-
     def __init__(self):
         super(ConvNet, self).__init__()
         self.conv1 = nn.Conv2d(1, 3, kernel_size=3)
@@ -50,6 +49,7 @@ class ConvNet(BaseModule):
 
 loss_fn = nn.CrossEntropyLoss
 optim_fn = optim_wrapper(optim.Adam, lr=1e-2)
+
 model_def = TorchModel(
     model_fn=ConvNet,
     loss_fn=loss_fn,
