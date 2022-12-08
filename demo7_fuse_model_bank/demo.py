@@ -13,7 +13,6 @@ from secretflow.utils.simulation.datasets import dataset
 from utils.config import *
 from secretflow.data.split import train_test_split
 from secretflow.ml.nn import SLModel
-
 from secretflow.utils.simulation.datasets import load_bank_marketing
 
 sf.init(['alice', 'bob'], num_cpus=8, log_to_driver=True)
