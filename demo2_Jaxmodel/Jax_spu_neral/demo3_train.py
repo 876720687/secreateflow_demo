@@ -10,7 +10,7 @@ from typing import Sequence
 import flax.linen as nn
 from sklearn.metrics import roc_auc_score
 
-from demo2_spu_logistic.demo_processJax import breast_cancer
+from Jax_spu_logistic.demo_processJax import breast_cancer
 
 FEATURES = [30, 15, 8, 1]
 

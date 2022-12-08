@@ -5,7 +5,7 @@
 # @contact: 876720687@qq.com
 
 import secretflow as sf
-from demo3_spu_neral.demo3_train import *
+from Jax_spu_neral.demo3_train import *
 
 if __name__ == "__main__":
 

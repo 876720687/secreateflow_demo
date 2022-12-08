@@ -8,13 +8,6 @@
 # success
 
 import secretflow as sf
-
-# In case you got a running secetflow runtime already.
-sf.shutdown()
-sf.init(parties=['alice', 'bob'])
-alice, bob = sf.PYU('alice'), sf.PYU('bob')
-
-
 import networkx as nx
 import numpy as np
 import os
@@ -25,20 +18,21 @@ import tempfile
 from pathlib import Path
 from secretflow.utils.simulation.datasets import dataset
 from secretflow.data.ndarray import load
-
-
 from secretflow.utils.simulation.datasets import load_cora
-
-(edge, features, Y_train, Y_val, Y_test, idx_train, idx_val, idx_test) = load_cora(
-    [alice, bob]
-)
-
 import tensorflow as tf
 from tensorflow.keras import activations
 from tensorflow.keras import backend as K
 from tensorflow.keras import constraints, initializers, regularizers
 from tensorflow.keras.layers import Dropout, Layer, LeakyReLU
 
+# In case you got a running secetflow runtime already.
+sf.shutdown()
+sf.init(parties=['alice', 'bob'])
+alice, bob = sf.PYU('alice'), sf.PYU('bob')
+
+(edge, features, Y_train, Y_val, Y_test, idx_train, idx_val, idx_test) = load_cora(
+    [alice, bob]
+)
 
 class GraphAttention(Layer):
     def __init__(

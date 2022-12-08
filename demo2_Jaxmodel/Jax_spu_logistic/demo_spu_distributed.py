@@ -8,7 +8,7 @@
 import os
 from pathlib import Path
 import sys
-from demo2_spu_logistic.demo_processJax import *
+from Jax_spu_logistic.demo_processJax import *
 
 # sys.path.append("/home/almalinux/sf-benchmark/demo2_spu_logistic")
 FILE = Path(__file__).resolve() # '/home/almalinux/sf-benchmark/demo2_spu_logistic/demo_spu.py'

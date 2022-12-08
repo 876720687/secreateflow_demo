@@ -8,13 +8,6 @@
 # success in server.
 
 import secretflow as sf
-from matplotlib import pyplot as plt
-
-# In case you have a running secretflow runtime already.
-sf.shutdown()
-sf.init(['alice', 'bob', 'charlie'], num_cpus=8, log_to_driver=False)
-alice, bob, charlie = sf.PYU('alice'), sf.PYU('bob'), sf.PYU('charlie')
-
 from secretflow.ml.nn.fl.backend.torch.utils import BaseModule, TorchModel
 from secretflow.ml.nn.fl.utils import metric_wrapper, optim_wrapper
 from secretflow.ml.nn import FLModel
@@ -23,6 +16,11 @@ from secretflow.security.aggregation import SecureAggregator
 from secretflow.utils.simulation.datasets import load_mnist
 from torch import nn, optim
 from torch.nn import functional as F
+
+# In case you have a running secretflow runtime already.
+sf.shutdown()
+sf.init(['alice', 'bob', 'charlie'], num_cpus=8, log_to_driver=False)
+alice, bob, charlie = sf.PYU('alice'), sf.PYU('bob'), sf.PYU('charlie')
 
 
 class ConvNet(BaseModule):
@@ -47,13 +45,11 @@ class ConvNet(BaseModule):
     is_torch=True,
 )
 
-loss_fn = nn.CrossEntropyLoss
-optim_fn = optim_wrapper(optim.Adam, lr=1e-2)
 
 model_def = TorchModel(
     model_fn=ConvNet,
-    loss_fn=loss_fn,
-    optim_fn=optim_fn,
+    loss_fn=nn.CrossEntropyLoss,
+    optim_fn=optim_wrapper(optim.Adam, lr=1e-2),
     metrics=[
         metric_wrapper(Accuracy, num_classes=10, average='micro'),
         metric_wrapper(Precision, num_classes=10, average='micro'),
@@ -70,13 +66,13 @@ fl_model = FLModel(
     device_list=device_list,
     model=model_def,
     aggregator=aggregator,
-    strategy='fed_avg_w', # fl strategy
-    backend="torch", # backend support ['tensorflow', 'torch']
+    strategy='fed_avg_w',  # fl strategy
+    backend="torch",  # backend support ['tensorflow', 'torch']
 )
 
 history = fl_model.fit(
-            train_data,
-            train_label,
+            x=train_data,
+            y=train_label,
             validation_data=(test_data, test_label),
             epochs=20,
             batch_size=32,
